@@ -1,6 +1,5 @@
-import Fraction from 'fraction.js';
-import { Spectrum } from '../Spectrum';
-import type { SpectrumData } from '../types';
+import { Spectrum } from '../classes';
+import { type SpectrumData } from '../lib';
 
 /**
  * Performance benchmark for Spectrum serialization and deserialization.

@@ -1,7 +1,6 @@
 import { describe, test, expect } from 'bun:test';
 import Fraction from 'fraction.js';
-import { Harmonic } from './Harmonic';
-import { Spectrum } from './Spectrum';
+import { Harmonic, Spectrum } from '../classes';
 
 describe('Spectrum instatnce', () => {
   describe('constructor', () => {

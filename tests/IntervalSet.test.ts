@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'bun:test';
 import Fraction from 'fraction.js';
-import { IntervalSet } from './IntervalSet';
+import { IntervalSet } from '../classes';
 
 describe('IntervalSet', () => {
   describe('constructor', () => {
