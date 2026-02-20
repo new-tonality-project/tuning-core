@@ -1,7 +1,7 @@
 {
     "name": "tuning-core",
-    "version": "1.0.0",
-    "module": "index.ts",
+    "version": "1.0.1",
+    "module": "dist/index.js",
     "type": "module",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
