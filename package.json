@@ -1,10 +1,13 @@
 {
     "name": "tuning-core",
     "version": "1.0.1",
-    "module": "dist/index.js",
+    "module": "index.js",
     "type": "module",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
     "scripts": {
         "build": "npx tsc",
         "publish": "npx tsc && bun publish --access public"
