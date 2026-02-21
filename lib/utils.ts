@@ -9,7 +9,7 @@ function round(num: number, places: number = 0): number {
  * Convert a frequency ratio to cents.
  * @param ratio - The ratio as FractionInput (number, string, array, object, or Fraction)
  * @param places - Number of decimal places to round to (default: 0, no decimals)
- * @returns The ratio in cents (1200 * log2(ratio)), rounded to the specified number of decimals
+ * @returns The ratio in cents (1200 * log2(ratio)), rounded to the specified number of decimals (default 0, no decimals 3/2 = 702 cents)
  */
 export function ratioToCents(ratio: FractionInput, places: number = 0): Fraction {
   const val = new Fraction(ratio).valueOf();
@@ -23,13 +23,13 @@ export function ratioToCents(ratio: FractionInput, places: number = 0): Fraction
  * Convert cents to a frequency ratio.
  * @param cents - The interval in cents as FractionInput (number, string, array, object, or Fraction)
  * @param places - Number of decimal places to round to (default: 0, no decimals)
- * @returns The ratio as a Fraction object (2^(cents/1200)), rounded to the specified number of decimals
+ * @returns The ratio as a Fraction object (2^(cents/1200)), rounded to the specified number of decimals before contertion to fraction (default 3 decimals, 702 cents = 3/2)
  */
-export function centsToRatio(cents: FractionInput, places: number = 0): Fraction {
+export function centsToRatio(cents: FractionInput, places: number = 3): Fraction {
   const val = new Fraction(cents).valueOf();
   const num = Math.pow(2, val / 1200);
   const rounded = round(num, places);
-  
+
   return new Fraction(rounded);
 }
 
