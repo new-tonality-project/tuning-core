@@ -216,6 +216,40 @@ export class IntervalSet {
   }
 
   /**
+ * Fill gaps between consecutive intervals by adding new intervals per gap,
+ * equally spaced in logarithmic (ratio) space. Adds at least 3 new intervals per gap.
+ * When maxGapCents is provided, subdivides further so each part is ≤ maxGapCents.
+ *
+ * @param maxGapCents - Optional maximum gap in cents. When set, each subdivision is ≤ this value.
+ * @returns this (for chaining)
+ */
+  interpolateLog(maxGapCents?: number): this {
+    if (maxGapCents !== undefined && maxGapCents <= 0) {
+      throw new Error("maxGapCents must be a positive number");
+    }
+
+    const ratios = this.getRatios();
+
+    for (let i = 0; i < ratios.length - 1; i++) {
+      const left = ratios[i]!.valueOf();
+      const right = ratios[i + 1]!.valueOf();
+      const gapRatio = right / left;
+
+      const gapCents = 1200 * Math.log2(gapRatio);
+
+      const n = Math.max(4, Math.ceil(gapCents / (maxGapCents ?? gapCents)))
+
+      for (let k = 1; k < n; k++) {
+        const num = left * Math.pow(gapRatio, k / n)
+        const rounded = Math.round(num * 10000) / 10000;
+        this.add(rounded);
+      }
+    }
+
+    return this;
+  }
+
+  /**
    * Generate all unique ratios between min and max with denominators up to maxDenominator.
    * 
    * This creates all possible fractions n/d where:
