@@ -1,7 +1,7 @@
 import Fraction, { type FractionInput } from 'fraction.js';
 import type { HarmonicData } from './types';
 
-function round(num: number, places: number = 0): number {
+export function round(num: number, places: number = 0): number {
   return Math.round(num * Math.pow(10, places)) / Math.pow(10, places);
 }
 

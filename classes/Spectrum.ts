@@ -1,6 +1,6 @@
 import Fraction, { type FractionInput } from 'fraction.js';
 import { Harmonic } from './Harmonic';
-import { type HarmonicData, type SpectrumData, isHarmonicData } from '../lib';
+import { type HarmonicData, type SpectrumData, isHarmonicData, round } from '../lib';
 
 /**
  * Represents a spectrum as a collection of harmonics.
@@ -295,7 +295,7 @@ export class Spectrum {
     for (const harmonic of this.harmonics.values()) {
       data.push(harmonic.toJSON());
     }
-    
+
     return data;
   }
 
@@ -308,6 +308,25 @@ export class Spectrum {
     for (let i = 1; i <= count; i++) {
       spectrum.add(new Fraction(fundamentalHz).mul(i), 1 / i);
     }
+
+    return spectrum;
+  }
+
+  /**
+   * Creates stretched spectrum that is stretched by a pseudo octave ratio
+   */
+  static stretched(count: number, fundamentalHz: FractionInput, pseudoOctaveRatio: FractionInput): Spectrum {
+    const spectrum = new Spectrum();
+    const fundamental = new Fraction(fundamentalHz).valueOf();
+    const pseudoOctave = new Fraction(pseudoOctaveRatio).valueOf();
+
+    for (let i = 1; i <= count; i++) {
+      spectrum.add(
+        round(fundamental * (pseudoOctave ** Math.log2(i), 4)),
+        1 / i,
+        0
+      )
+  }
 
     return spectrum;
   }
