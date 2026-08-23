@@ -314,6 +314,7 @@ export class Spectrum {
 
   /**
    * Creates stretched spectrum that is stretched by a pseudo octave ratio
+   * if pseudoOctaveRatio is 2, it is a normal harmonic spectrum.
    */
   static stretched(count: number, fundamentalHz: FractionInput, pseudoOctaveRatio: FractionInput): Spectrum {
     const spectrum = new Spectrum();
@@ -322,11 +323,11 @@ export class Spectrum {
 
     for (let i = 1; i <= count; i++) {
       spectrum.add(
-        round(fundamental * (pseudoOctave ** Math.log2(i), 4)),
+        round(fundamental * (pseudoOctave ** Math.log2(i)), 4),
         1 / i,
         0
       )
-  }
+    }
 
     return spectrum;
   }

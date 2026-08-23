@@ -1,6 +1,7 @@
 import { describe, test, expect } from 'bun:test';
 import Fraction from 'fraction.js';
 import { IntervalSet } from '../classes';
+import { assertHarmonicAmplitudesAndPhases } from './assertions';
 
 describe('IntervalSet', () => {
   describe('constructor', () => {
@@ -333,9 +334,7 @@ describe('IntervalSet', () => {
       });
 
       expect(spectrum.size).toBe(3);
-      expect(spectrum.get(1)?.amplitude).toBe(1);
-      expect(spectrum.get('3/2')?.amplitude).toBe(0.5);
-      expect(spectrum.get(2)?.amplitude).toBeCloseTo(0.333, 3);
+      assertHarmonicAmplitudesAndPhases(spectrum);
     });
 
     test('converts to spectrum with constant amplitude', () => {
@@ -573,7 +572,7 @@ describe('IntervalSet', () => {
         expect(count3_2).toBe(1);
       });
 
-      test.only('handles large denominator limits', () => {
+      test('handles large denominator limits', () => {
         const set = IntervalSet.range(1, 2, 100);
 
         expect(set.size).toEqual(3045); // Many ratios

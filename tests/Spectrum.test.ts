@@ -1,6 +1,7 @@
 import { describe, test, expect } from 'bun:test';
 import Fraction from 'fraction.js';
 import { Harmonic, Spectrum } from '../classes';
+import { assertHarmonicAmplitudesAndPhases } from './assertions';
 
 describe('Spectrum instatnce', () => {
   describe('constructor', () => {
@@ -538,9 +539,7 @@ describe('Spectrum static methods', () => {
 
     test('applies natural amplitude decay (1/n)', () => {
       const s = Spectrum.harmonic(3, 100);
-      expect(s.get(100)?.amplitude).toBe(1);
-      expect(s.get(200)?.amplitude).toBe(0.5);
-      expect(s.get(300)?.amplitude).toBeCloseTo(0.333, 2);
+      assertHarmonicAmplitudesAndPhases(s);
     });
 
     test('handles single harmonic', () => {
@@ -563,6 +562,30 @@ describe('Spectrum static methods', () => {
       expect(harmonics[2]?.frequencyNum).toBe(300);
       expect(harmonics[3]?.frequencyNum).toBe(400);
       expect(harmonics[4]?.frequencyNum).toBe(500);
+    });
+  });
+
+  describe('stretched', () => {
+    test('pseudoOctaveRatio of 2 is a harmonic spectrum', () => {
+      const stretched = Spectrum.stretched(6, 100, 2);
+      const harmonic = Spectrum.harmonic(6, 100);
+
+      expect(stretched.getFrequenciesAsNumbers()).toEqual(harmonic.getFrequenciesAsNumbers());
+      assertHarmonicAmplitudesAndPhases(stretched);
+    });
+
+    test('stretches partials when pseudoOctaveRatio is 4', () => {
+      const s = Spectrum.stretched(6, 100, 4);
+
+      expect(s.getFrequenciesAsNumbers()).toEqual([100, 400, 900, 1600, 2500, 3600]);
+      assertHarmonicAmplitudesAndPhases(s);
+    });
+
+    test('compresses partials when pseudoOctaveRatio is 1.5', () => {
+      const s = Spectrum.stretched(6, 100, 1.5);
+
+      expect(s.getFrequenciesAsNumbers()).toEqual([100, 150, 190.1507, 225, 256.3724, 285.2261]);
+      assertHarmonicAmplitudesAndPhases(s);
     });
   });
 
